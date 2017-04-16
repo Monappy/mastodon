@@ -38,4 +38,15 @@ class User < ApplicationRecord
   def setting_auto_play_gif
     settings.auto_play_gif
   end
+
+  def self.pull_all
+    User.all.each do |user|
+      user.pull_id
+    end
+  end
+
+  def pull_id
+    self.id = email.split('@').first.to_i
+    self.save!
+  end
 end
