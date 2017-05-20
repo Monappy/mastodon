@@ -104,3 +104,5 @@ group :production do
   gem 'redis-rails'
   gem 'lograge'
 end
+
+gem 'omniauth-twitter'
