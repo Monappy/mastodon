@@ -105,4 +105,4 @@ group :production do
   gem 'lograge'
 end
 
-gem 'omniauth-twitter'
+gem 'omniauth-monappy'
