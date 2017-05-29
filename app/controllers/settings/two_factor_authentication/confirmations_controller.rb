@@ -12,6 +12,9 @@ module Settings
       end
 
       def create
+	# Disable
+	raise ActionController::RoutingError.new('Not Found')
+=begin
         if current_user.validate_and_consume_otp!(confirmation_params[:code])
           flash[:notice] = I18n.t('two_factor_authentication.enabled_success')
 
@@ -25,6 +28,7 @@ module Settings
           prepare_two_factor_form
           render :new
         end
+=end
       end
 
       private

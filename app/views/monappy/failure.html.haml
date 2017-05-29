@@ -1,0 +1,8 @@
+- content_for :page_title do
+  = '認証に失敗しました'
+
+- content_for :content do
+  %p
+    = 'Monappyにログインできませんでした。もう一度お試しください。'
+  .error_footer
+    = link_to 'ホームに戻る', '/about'

@@ -9,12 +9,15 @@
     .controls
       .remote-follow
         = link_to t('accounts.remote_follow'), account_remote_follow_path(account), class: 'button'
-  .avatar= image_tag account.avatar.url(:original), class: 'u-photo'
+  .avatar
+    = image_tag account.avatar.url(:original), class: 'u-photo'
   %h1.name
     %span.p-name.emojify= display_name(account)
     %small
       %span= "@#{account.username}"
       = fa_icon('lock') if account.locked?
+      - if account.local?
+        = link_to 'monappy', "https://monappy.jp/u/#{account.username}", target: '_blank', class: 'monappy-button'
   .details
     .bio
       .account__header__content.p-note.emojify= Formatter.instance.simplified_format(account)

@@ -39,14 +39,14 @@ class User < ApplicationRecord
     settings.auto_play_gif
   end
 
-  def self.pull_all
-    User.all.each do |user|
-      user.pull_id
+   def update_without_password(params, *options)
+    if params[:password].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation) if params[:password_confirmation].blank?
     end
-  end
 
-  def pull_id
-    self.id = email.split('@').first.to_i
-    self.save!
+    result = update_attributes(params, *options)
+    clean_up_passwords
+    result
   end
 end

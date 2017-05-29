@@ -28,7 +28,8 @@
     - if true
       .closed-registrations-message
         .info
-          =link_to 'Monappyアカウントでログイン', '/auth/monappy'
+          .login_monappy
+            =link_to 'Monappyでログイン', '/auth/monappy'
           %br
           = link_to t('about.about_this'), about_more_path
 

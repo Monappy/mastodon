@@ -49,6 +49,14 @@ class NotificationMailer < ApplicationMailer
       mail to: @me.user.email, subject: I18n.t('notification_mailer.follow_request.subject', name: @account.acct)
     end
   end
+  
+  def notify_password(recipient, password)
+    @me = recipient
+
+    I18n.with_locale(@me.user.locale || I18n.default_locale) do
+      mail to: @me.user.email, subject: I18n.t('notification_mailer.notify_password.subject', password: @password)
+    end
+  end
 
   def digest(recipient, opts = {})
     @me            = recipient

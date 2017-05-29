@@ -37,4 +37,8 @@ class Auth::RegistrationsController < Devise::RegistrationsController
   def determine_layout
     %w(edit update).include?(action_name) ? 'admin' : 'auth'
   end
+
+  def update_resource(resource, params)
+    resource.update_without_password(params)
+  end
 end

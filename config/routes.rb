@@ -195,6 +195,7 @@ Rails.application.routes.draw do
   get '/terms',      to: 'about#terms'
 
   get '/auth/monappy/callback',      to: 'monappy#callback'
+  get '/auth/failure',               to: 'monappy#failure'
 
   root 'home#index'
 

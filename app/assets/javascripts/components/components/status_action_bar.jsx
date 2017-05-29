@@ -27,6 +27,7 @@ class StatusActionBar extends React.PureComponent {
     this.handleReblogClick = this.handleReblogClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleMentionClick = this.handleMentionClick.bind(this);
+    this.handleMonappyClick = this.handleMonappyClick.bind(this);
     this.handleMuteClick = this.handleMuteClick.bind(this);
     this.handleBlockClick = this.handleBlockClick.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
@@ -69,10 +70,15 @@ class StatusActionBar extends React.PureComponent {
     this.props.onReport(this.props.status);
     this.context.router.push('/report');
   }
+  
+  handleMonappyClick() {
+    window.open(`https://monappy.jp/u/${this.props.status.getIn(['account', 'username'])}`);
+  }
 
   render () {
     const { status, me, intl } = this.props;
     const reblog_disabled = status.get('visibility') === 'private' || status.get('visibility') === 'direct';
+    const monappy_disabled = status.getIn(['account', 'monappy_url']) === null;
     let menu = [];
 
     menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
@@ -106,6 +112,7 @@ class StatusActionBar extends React.PureComponent {
         <div className='status__action-bar-button-wrapper'><IconButton title={reply_title} icon={reply_icon} onClick={this.handleReplyClick} /></div>
         <div className='status__action-bar-button-wrapper'><IconButton disabled={reblog_disabled} active={status.get('reblogged')} title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} /></div>
         <div className='status__action-bar-button-wrapper'><IconButton animate={true} active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} className='star-icon' /></div>
+        <div className='status__action-bar-button-wrapper'><IconButton title='Monappy' disabled={monappy_disabled} icon='product-hunt' onClick={this.handleMonappyClick} /></div>
 
         <div className='status__action-bar-dropdown'>
           <DropdownMenu items={menu} icon='ellipsis-h' size={18} direction="right" ariaLabel="More"/>

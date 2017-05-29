@@ -87,6 +87,7 @@ class Header extends React.Component {
     let info        = '';
     let actionBtn   = '';
     let lockedIcon  = '';
+    let monappyAuth = '';
 
     if (displayName.length === 0) {
       displayName = account.get('username');
@@ -115,6 +116,9 @@ class Header extends React.Component {
     if (account.get('locked')) {
       lockedIcon = <i className='fa fa-lock' />;
     }
+    if (account.get('monappy_url') !== null) {
+      monappyAuth = <a target="_blank" className="monappy-button" href={account.get('monappy_url')}>monappy</a>;
+    }
 
     const content         = { __html: emojify(account.get('note')) };
     const displayNameHTML = { __html: emojify(escapeTextContentForBrowser(displayName)) };
@@ -125,7 +129,7 @@ class Header extends React.Component {
           <Avatar account={account} autoPlayGif={this.props.autoPlayGif} />
 
           <span style={{ display: 'inline-block', fontSize: '20px', lineHeight: '27px', fontWeight: '500' }} className='account__header__display-name' dangerouslySetInnerHTML={displayNameHTML} />
-          <span className='account__header__username' style={{ fontSize: '14px', fontWeight: '400', display: 'block', marginBottom: '10px' }}>@{account.get('acct')} {lockedIcon}</span>
+          <span className='account__header__username' style={{ fontSize: '14px', fontWeight: '400', display: 'block', marginBottom: '10px' }}>@{account.get('acct')} {lockedIcon} {monappyAuth}</span>
           <div style={{ fontSize: '14px' }} className='account__header__content' dangerouslySetInnerHTML={content} />
 
           {info}

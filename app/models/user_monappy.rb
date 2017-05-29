@@ -13,10 +13,5 @@ class UserMonappy
     user
   end
 
-  def self.pull_all
-    User.all.each do |user|
-      user.save!
-    end
-  end
 end
 

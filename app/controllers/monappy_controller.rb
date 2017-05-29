@@ -4,4 +4,8 @@ class MonappyController < ApplicationController
     sign_in UserMonappy.sign_in(data)
     redirect_to :root
   end
+
+  def failure
+    render :layout => 'error'
+  end
 end

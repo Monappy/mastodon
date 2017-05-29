@@ -7,12 +7,19 @@ module Settings
     before_action :authenticate_user!
     before_action :verify_otp_required, only: [:create]
 
-    def show; end
+    def show
+      # Disable
+      raise ActionController::RoutingError.new('Not Found')
+    end
 
     def create
+      #Disable
+      raise ActionController::RoutingError.new('Not Found')
+=begin
       current_user.otp_secret = User.generate_otp_secret(32)
       current_user.save!
       redirect_to new_settings_two_factor_authentication_confirmation_path
+=end
     end
 
     def destroy
