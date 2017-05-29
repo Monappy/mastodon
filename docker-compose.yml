@@ -4,16 +4,16 @@ services:
   db:
     restart: always
     image: postgres:alpine
-### Uncomment to enable DB persistance
-#    volumes:
-#      - ./postgres:/var/lib/postgresql/data
+## Uncomment to enable DB persistance
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
 
   redis:
     restart: always
     image: redis:alpine
-### Uncomment to enable REDIS persistance
-#    volumes:
-#      - ./redis:/data
+## Uncomment to enable REDIS persistance
+    volumes:
+      - ./redis:/data
 
   web:
     restart: always
@@ -47,9 +47,47 @@ services:
     build: .
     image: gargron/mastodon
     env_file: .env.production
-    command: bundle exec sidekiq -q default -q mailers -q pull -q push
+    command: bundle exec sidekiq -q default -c 16
     depends_on:
       - db
       - redis
     volumes:
       - ./public/system:/mastodon/public/system
+
+  sidekiq_mail:
+    restart: always
+    build: .
+    image: gargron/mastodon
+    env_file: .env.production
+    command: bundle exec sidekiq -q mailers -c 4
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_pull:
+    restart: always
+    build: .
+    image: gargron/mastodon
+    env_file: .env.production
+    command: bundle exec sidekiq -q pull -c 8
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_push:
+    restart: always
+    build: .
+    image: gargron/mastodon
+    env_file: .env.production
+    command: bundle exec sidekiq -q push -c 8
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+
