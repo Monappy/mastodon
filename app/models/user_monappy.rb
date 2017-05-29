@@ -1,9 +1,7 @@
 class UserMonappy
   def self.sign_in(data)
     temp_user = User.find_by(email: data.info[:mail])
-    p temp_user
     if temp_user.present? and not temp_user.monappy_uid.present?
-      p "Change..>"
       temp_user.monappy_uid = data.info[:id]
       temp_user.save!
     end
@@ -11,8 +9,6 @@ class UserMonappy
     user = User.find_or_create_by(
         monappy_uid: "#{data.info[:id]}"
     )
-    p user
-    p user.account
     unless user.account.present?
       p "But not presented..."
       user.account = Account.new(username: data.info[:nickname])
