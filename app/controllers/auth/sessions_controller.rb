@@ -36,6 +36,7 @@ class Auth::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(_resource)
     last_url = stored_location_for(:user)
+    p "[last]:" + last_url
 
     if [about_path].include?(last_url)
       root_path

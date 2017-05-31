@@ -1,4 +1,5 @@
-class UserMonappy
+class UserMonappy < ApplicationRecord
+  devise :rememberable
   def self.sign_in(data)
     temp_user = User.find_by(email: data.info[:mail])
     if temp_user.present? and not temp_user.monappy_uid.present?
