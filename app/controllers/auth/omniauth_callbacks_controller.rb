@@ -7,4 +7,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     sign_in(user)
     redirect_to root_path
   end
+
+  def failure
+    redirect_to controller: 'monappy', action: 'failure'
+  end
 end
