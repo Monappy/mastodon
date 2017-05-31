@@ -1,3 +1,5 @@
+require 'omniauth-monappy'
+
 Devise.setup do |config|
   config.warden do |manager|
     manager.default_strategies(scope: :user).unshift :two_factor_authenticatable
@@ -243,7 +245,8 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-
+  config.omniauth_path_prefix = '/auth/oauth'
+  config.omniauth :monappy, ENV['MONAPPY_KEY'], ENV['MONAPPY_SECRET']
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

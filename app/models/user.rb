@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   devise :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :confirmable,
-         :two_factor_authenticatable, :two_factor_backupable,
+         :two_factor_authenticatable, :two_factor_backupable, :omniauthable,
          otp_secret_encryption_key: ENV['OTP_SECRET'],
          otp_number_of_backup_codes: 10
 
@@ -39,7 +39,7 @@ class User < ApplicationRecord
     settings.auto_play_gif
   end
 
-   def update_without_password(params, *options)
+  def update_without_password(params, *options)
     if params[:password].blank?
       params.delete(:password)
       params.delete(:password_confirmation) if params[:password_confirmation].blank?
@@ -48,5 +48,31 @@ class User < ApplicationRecord
     result = update_attributes(params, *options)
     clean_up_passwords
     result
+  end
+
+  def self.login_with_monappy(data)
+    temp_user = User.find_by(email: data.info[:mail])
+    if temp_user.present? and not temp_user.monappy_uid.present?
+      temp_user.monappy_uid = data.info[:id]
+      temp_user.save!
+    end
+
+    user = User.find_or_create_by(
+        monappy_uid: "#{data.info[:id]}"
+    )
+    unless user.account.present?
+      p "But not presented..."
+      user.account = Account.new(username: data.info[:nickname])
+      user.email = data.info[:mail]
+      user.password  = Devise.friendly_token[0,20]
+      user.account.avatar_remote_url = data.info[:image]
+      begin 
+        user.save!
+      rescue
+        Rails.logger.warn("Can't save user!")
+      end
+      user.skip_confirmation!
+    end
+    user
   end
 end
