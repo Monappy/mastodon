@@ -3,8 +3,7 @@ class UserMonappy < ApplicationRecord
   def self.sign_in(data)
     temp_user = User.find_by(email: data.info[:mail])
     if temp_user.present? and not temp_user.monappy_uid.present?
-      temp_user.monappy_uid = data.info[:id]
-      temp_user.save!
+      temp_user.update_attribute(:monappy_uid , data.info[:id])
     end
 
     user = User.find_or_create_by(
